@@ -4,6 +4,7 @@ import { Plus, Edit, Trash2, List, LayoutGrid, X, GripVertical, ChevronDown, Dow
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { PROFILE_TEMPLATES, initInputDataFromFields } from '../../../profileTemplates.js';
+import { APC_HO_SO_CHUAN } from '../../../apcHoSoChuan.js';
 
 import FieldEditorModal from './FieldEditorModal.jsx';
 import GroupEditorModal from './GroupEditorModal.jsx';
@@ -848,7 +849,23 @@ const FieldManagement = ({
             </div>
           )}
 
-          {/* Mẫu cố định */}
+          {/* Bộ hồ sơ chuẩn APC gốc (1 quy trình chung) */}
+          <div className="mb-4">
+            <h4 className="text-sm font-bold text-green-700 mb-2">★ Bộ hồ sơ chuẩn APC</h4>
+            <div className="border-2 border-green-500 rounded-xl p-3 bg-green-50 shadow-sm flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">{APC_HO_SO_CHUAN.icon}</span>
+                <div>
+                  <h3 className="font-bold text-gray-800">{APC_HO_SO_CHUAN.name}</h3>
+                  <p className="text-xs text-gray-500">{APC_HO_SO_CHUAN.description}</p>
+                </div>
+              </div>
+              <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => handleLoadTemplate(APC_HO_SO_CHUAN)}>
+                Tải bộ hồ sơ chuẩn
+              </Button>
+            </div>
+          </div>
+          {/* Mẫu cố định (cũ, giữ để tương thích) */}
           <div>
             <h4 className="text-sm font-bold text-gray-700 mb-2">Mẫu mặc định</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

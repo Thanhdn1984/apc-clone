@@ -471,7 +471,7 @@ const GeneratorTab = ({
         try {
             const incoming = [];
             for (const t of list) {
-                const res = await fetch(`http://127.0.0.1:20246/api/templates/${encodeURIComponent(t.name)}`);
+                const res = await fetch(`/api/templates/${encodeURIComponent(t.name)}`);
                 if (!res.ok) { addLog(`Không tải được mẫu server ${t.name}: HTTP ${res.status}`, 'error'); continue; }
                 const buffer = await res.arrayBuffer();
                 incoming.push({ id: `server-${t.name}-${t.size}`, name: t.name, webBuffer: buffer, size: t.size, path: 'server-templates' });

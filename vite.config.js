@@ -15,7 +15,11 @@ export default defineConfig({
   
   // FIX: Explicitly set the server port to match Electron's expectation
   server: {
-    port: 5000, 
+    port: 5000,
+    proxy: {
+      // Dev: forward /api → Express backend (port 20246), mirror nginx prod
+      '/api': { target: 'http://127.0.0.1:20246', changeOrigin: true },
+    },
   },
 
   // =========================================================================

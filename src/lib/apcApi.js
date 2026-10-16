@@ -1,5 +1,5 @@
-// src/lib/apcApi.js — client cho APC backend (port 20246)
-const BASE = 'http://127.0.0.1:20246/api';
+// Same-origin: nginx proxy /api → 127.0.0.1:20246 (tranh hardcode 127.0.0.1 + mixed-content)
+const BASE = '/api';
 
 async function req(table, method = 'GET', body, id) {
   const url = id ? `${BASE}/${table}/${id}` : `${BASE}/${table}`;
@@ -46,6 +46,37 @@ export const apcApi = {
   },
   deleteServerTemplate: async (name) => {
     const r = await fetch(`${BASE}/templates/${encodeURIComponent(name)}`, { method: 'DELETE' });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+    return data;
+  },
+  // Duyet ho so nhieu cap (trinh -> kiem soat -> phe duyet)
+  submitProfile: async (id, approver = '') => {
+    const r = await fetch(`${BASE}/profiles/${id}/submit`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ approver }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+    return data;
+  },
+  profileApprovals: async (id) => {
+    const r = await fetch(`${BASE}/profiles/${id}/approvals`);
+    const data = await r.json().catch(() => ([]));
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+    return data;
+  },
+  decideApproval: async (approvalId, decision, approver = '', note = '') => {
+    const r = await fetch(`${BASE}/approvals/${approvalId}/decide`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ decision, approver, note }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+    return data;
+  },
+  dashboard: async () => {
+    const r = await fetch(`${BASE}/dashboard`);
     const data = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
     return data;

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs.jsx";
-import { Dna, Settings, Bot, Download, RefreshCw, Wrench, MonitorDown, Database, FileSpreadsheet } from 'lucide-react';
+import { Dna, Settings, Bot, Download, RefreshCw, Wrench, MonitorDown, Database, FileSpreadsheet, ClipboardCheck } from 'lucide-react';
 import { useToast } from "./components/ui/use-toast.js";
 import { Toaster } from "./components/ui/toaster.jsx";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./components/ui/alert-dialog.jsx";
@@ -12,6 +12,7 @@ import GeneratorTab from './tabs/GeneratorTab.jsx';
 import ConfigTab from './tabs/ConfigTab.jsx';
 import ToolsTab from './tabs/ToolsTab.jsx';
 import AdminTab from './tabs/AdminTab.jsx';
+import ApprovalTab from './tabs/ApprovalTab.jsx';
 import ImportTab from './tabs/ImportTab.jsx';
 import WelcomeGuide from './components/WelcomeGuide.jsx';
 import ApcLoginGate, { loadCurrentUser, isAdminUser, APC_USER_KEY } from './components/ApcLoginGate.jsx';
@@ -477,9 +478,10 @@ function App() {
                 <p className="text-xs text-gray-100">Công cụ tạo tài liệu tự động từ file Word (.docx) — {currentUser?.username} ({currentUser?.role}) <button onClick={handleLogout} className="underline ml-1">Đăng xuất</button></p>
             </header>
             <div className="bg-white rounded-md shadow-inner-lg p-1.5 mx-auto max-w-3xl mt-1 mb-1">
-              <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'} gap-1`}>
+              <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-7' : 'grid-cols-6'} gap-1`}>
                   <TabsTrigger value="data-input"><Dna size={16} /> <span className="ml-1">Nhập Dữ Liệu</span></TabsTrigger>
                   <TabsTrigger value="generator"><Bot size={16} /> <span className="ml-1">Tạo File</span></TabsTrigger>
+                  <TabsTrigger value="approval"><ClipboardCheck size={16} /> <span className="ml-1">Duyệt</span></TabsTrigger>
                   <TabsTrigger value="tools"><Wrench size={16} /> <span className="ml-1">Công Cụ</span></TabsTrigger>
                   <TabsTrigger value="import"><FileSpreadsheet size={16} /> <span className="ml-1">Import Excel</span></TabsTrigger>
                   {isAdmin && <TabsTrigger value="admin"><Database size={16} /> <span className="ml-1">Quản Trị</span></TabsTrigger>}
@@ -560,6 +562,10 @@ function App() {
 
           <TabsContent value="import" className="h-full">
             <ImportTab />
+          </TabsContent>
+
+          <TabsContent value="approval" className="h-full">
+            <ApprovalTab />
           </TabsContent>
 
           <TabsContent value="admin" className="h-full">

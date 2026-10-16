@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   profile_type TEXT NOT NULL DEFAULT 'thau_chi',
   data TEXT NOT NULL DEFAULT '{}',
   created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
   created_at TEXT DEFAULT (datetime('now','localtime'))
 );
 CREATE INDEX IF NOT EXISTS idx_profiles_customer ON profiles(customer_code);
@@ -46,7 +47,27 @@ CREATE TABLE IF NOT EXISTS attributes (
   required INTEGER NOT NULL DEFAULT 0,
   created_at TEXT DEFAULT (datetime('now','localtime'))
 );
+CREATE TABLE IF NOT EXISTS approvals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  profile_id INTEGER NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  level INTEGER NOT NULL DEFAULT 1 CHECK (level IN (1,2,3)),
+  approver TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected')),
+  note TEXT NOT NULL DEFAULT '',
+  created_at TEXT DEFAULT (datetime('now','localtime')),
+  decided_at TEXT DEFAULT NULL,
+  UNIQUE (profile_id, level)
+);
+CREATE INDEX IF NOT EXISTS idx_approvals_profile ON approvals(profile_id);
 `);
+
+// Migration: them cot status cho profiles (DB cu chua co)
+try {
+  const cols = db.prepare('PRAGMA table_info(profiles)').all().map((c) => c.name);
+  if (!cols.includes('status')) {
+    db.exec(`ALTER TABLE profiles ADD COLUMN status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','in_review','approved','rejected'))`);
+  }
+} catch { /* bang moi da co default */ }
 
 // Seed 1 chi nhanh + 1 admin mac dinh (chi khi bang rong)
 const branchCount = db.prepare('SELECT COUNT(*) c FROM branches').get().c;

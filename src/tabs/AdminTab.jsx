@@ -85,6 +85,7 @@ export default function AdminTab() {
         <Button variant={tab === 'attributes' ? 'default' : 'outline'} onClick={() => setTab('attributes')}><ListPlus size={14} className="mr-1" /> Thuoc tinh</Button>
         <Button variant={tab === 'branches' ? 'default' : 'outline'} onClick={() => setTab('branches')}><Building2 size={14} className="mr-1" /> Chi nhanh ({branches.length})</Button>
         <Button variant={tab === 'users' ? 'default' : 'outline'} onClick={() => setTab('users')}><Users size={14} className="mr-1" /> Nguoi dung ({users.length})</Button>
+        <Button variant={tab === 'templates' ? 'default' : 'outline'} onClick={() => setTab('templates')}> Mẫu .docx</Button>
         <Button variant="ghost" onClick={reload}><RefreshCw size={14} /></Button>
       </div>
 
@@ -145,6 +146,9 @@ export default function AdminTab() {
       {tab === 'users' && (
         <BranchUserList kind="users" items={users} branches={branches} reload={reload} />
       )}
+      {tab === 'templates' && (
+        <ServerTemplatePanel />
+      )}
     </div>
   );
 }
@@ -192,6 +196,81 @@ function BranchUserList({ kind, items, branches = [], reload }) {
             ))}
           </tbody>
         </table>
+      </CardContent>
+    </Card>
+  );
+}
+
+// (3) UPLOAD MAU WORD: chon file .docx -> POST raw len /api/templates,
+// luu vao thu muc templates/ o server. GeneratorTab nap lai danh sach nay.
+function ServerTemplatePanel() {
+  const { toast } = useToast();
+  const [items, setItems] = useState([]);
+  const [uploading, setUploading] = useState(false);
+
+  const reload = useCallback(async () => {
+    try {
+      const list = await apcApi.listServerTemplates();
+      setItems(Array.isArray(list) ? list : []);
+    } catch (e) {
+      toast({ title: 'Loi tai danh sach mau', description: String(e.message), variant: 'destructive' });
+    }
+  }, [toast]);
+
+  useEffect(() => { reload(); }, [reload]);
+
+  const onPick = async (e) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = '';
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      let n = 0;
+      for (const f of files) {
+        if (!/\.docx$/i.test(f.name)) { toast({ title: 'Bo qua (khong phai .docx)', description: f.name, variant: 'destructive' }); continue; }
+        const buf = await f.arrayBuffer();
+        const magic = new Uint8Array(buf.slice(0, 2));
+        if (magic[0] !== 0x50 || magic[1] !== 0x4b) { toast({ title: 'File loi (khong phai DOCX)', description: f.name, variant: 'destructive' }); continue; }
+        await apcApi.uploadServerTemplate(f.name, buf);
+        n++;
+      }
+      if (n) toast({ title: `Da upload ${n} mau .docx vao templates/` });
+      reload();
+    } catch (err) {
+      toast({ title: 'Loi upload', description: String(err.message), variant: 'destructive' });
+    } finally { setUploading(false); }
+  };
+
+  const del = async (name) => {
+    if (!window.confirm(`Xoa mau ${name}?`)) return;
+    try { await apcApi.deleteServerTemplate(name); toast({ title: 'Da xoa mau' }); reload(); }
+    catch (e) { toast({ title: 'Loi xoa', description: String(e.message), variant: 'destructive' }); }
+  };
+
+  return (
+    <Card>
+      <CardHeader><CardTitle>Mau .docx tren server ({items.length})</CardTitle></CardHeader>
+      <CardContent>
+        <div className="flex gap-2 mb-3">
+          <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-blue-600 text-white text-sm cursor-pointer hover:bg-blue-700">
+            <Plus size={14} /> {uploading ? 'Dang upload...' : 'Upload .docx'}
+            <input type="file" accept=".docx" multiple className="hidden" disabled={uploading} onChange={onPick} />
+          </label>
+          <Button variant="outline" onClick={reload}><RefreshCw size={14} /></Button>
+        </div>
+        <p className="text-xs text-gray-500 mb-2">Luu vao thu muc templates/ o server — tab Tao File nap duoc danh sach nay.</p>
+        <table className="w-full text-sm">
+          <tbody>
+            {items.map((t) => (
+              <tr key={t.name} className="border-t">
+                <td className="py-1 font-mono">{t.name}</td>
+                <td className="text-xs text-gray-500">{((t.size || 0) / 1024).toFixed(1)} KB</td>
+                <td className="text-right"><button className="p-1 text-red-600" onClick={() => del(t.name)}><Trash2 size={14} /></button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {items.length === 0 && <p className="text-sm text-gray-400">Chua co mau nao — hay upload file .docx.</p>}
       </CardContent>
     </Card>
   );

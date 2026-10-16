@@ -22,6 +22,8 @@ import { evaluateAllFormulas, generateSumFields } from '../lib/formulaEngine.js'
 import { useToast } from '../components/ui/use-toast.js';
 import { ScanText } from 'lucide-react';
 import ApcNativeSchemaPanel from '../components/data-input/management/ApcNativeSchemaPanel.jsx';
+import ApcDynamicFields from '../components/data-input/ApcDynamicFields.jsx';
+import ApcProfileSearch from '../components/data-input/ApcProfileSearch.jsx';
 
 const DataInputTab = ({
   fields,
@@ -325,6 +327,10 @@ const DataInputTab = ({
                 ))}
               </Accordion>
             )}
+            {/* (1) Thuoc tinh dong tu API attributes -> luu vao profiles.data */}
+            <ApcDynamicFields inputData={inputData} onDataChange={onDataChange} />
+            {/* (2) Tim kiem ho so theo customer_code: list + xem + xoa */}
+            <ApcProfileSearch inputData={inputData} onLoadProfile={(data) => onDataChange(data)} />
           </div>
         </TabsContent>
 

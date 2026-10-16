@@ -15,6 +15,7 @@ import { addLegacyPlaceholderAliases } from '../lib/legacyPlaceholderAliases.js'
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { saveAs } from 'file-saver';
+import { apcApi } from '../lib/apcApi.js';
 
 const sanitizeFileNamePart = (value = '') => String(value).replace(/[\\/:*?"<>|]/g, '-').trim();
 
@@ -453,6 +454,37 @@ const GeneratorTab = ({
         setSelectedTemplateIds(new Set());
     };
 
+    // (3) Nap mau .docx tu server (thu muc templates/ — do AdminTab upload)
+    // Fetch binary /api/templates/:name -> webBuffer -> docxtemplater render duoc.
+    const handleLoadServerTemplates = async () => {
+        let list = [];
+        try {
+            list = await apcApi.listServerTemplates();
+        } catch (e) {
+            toast({ title: 'Không nối được API mẫu', description: `${e.message} (chạy node server/api.js)`, variant: 'destructive' });
+            return;
+        }
+        if (!list.length) {
+            toast({ title: 'Server chưa có mẫu nào', description: 'Vào tab Quản Trị → Mẫu .docx để upload.' });
+            return;
+        }
+        try {
+            const incoming = [];
+            for (const t of list) {
+                const res = await fetch(`http://127.0.0.1:20246/api/templates/${encodeURIComponent(t.name)}`);
+                if (!res.ok) { addLog(`Không tải được mẫu server ${t.name}: HTTP ${res.status}`, 'error'); continue; }
+                const buffer = await res.arrayBuffer();
+                incoming.push({ id: `server-${t.name}-${t.size}`, name: t.name, webBuffer: buffer, size: t.size, path: 'server-templates' });
+            }
+            const names = new Set(incoming.map(t => t.name));
+            setTemplates(prev => [...prev.filter(t => !names.has(t.name)), ...incoming]);
+            setSelectedTemplateIds(new Set(incoming.map(t => t.id)));
+            toast({ title: 'Đã nạp mẫu từ server', description: `${incoming.length} mẫu .docx từ thư mục templates/` });
+        } catch (e) {
+            toast({ title: 'Lỗi nạp mẫu server', description: e.message, variant: 'destructive' });
+        }
+    };
+
     const handleToggleSelect = (id, isSelected) => {
         const newSet = new Set(safeSelectedTemplateIds);
         if (isSelected) newSet.add(id); else newSet.delete(id);
@@ -691,6 +723,7 @@ const GeneratorTab = ({
                         <div className="flex items-center gap-2">
                             <Tooltip content="Thêm mẫu từ máy tính"><Button size="icon" onClick={handleAddTemplates} className="bg-blue-600 text-white hover:bg-blue-700"><FilePlus2 size={18}/></Button></Tooltip>
                             <Tooltip content="Chọn bộ mẫu đã gán placeholder"><Button size="icon" onClick={handleLoadTemplateGroup} className="bg-amber-600 text-white hover:bg-amber-700"><Cloud size={18}/></Button></Tooltip>
+                            <Tooltip content="Nạp mẫu .docx từ server (tab Quản Trị đã upload)"><Button size="icon" onClick={handleLoadServerTemplates} className="bg-teal-600 text-white hover:bg-teal-700"><DownloadCloud size={18}/></Button></Tooltip>
                             <Tooltip content="Lưu bộ mẫu (đang phát triển)"><span><Button variant="secondary" size="icon" disabled><Save size={18}/></Button></span></Tooltip>
                             <div className="relative flex-grow">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />

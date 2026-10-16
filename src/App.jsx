@@ -14,6 +14,7 @@ import ToolsTab from './tabs/ToolsTab.jsx';
 import AdminTab from './tabs/AdminTab.jsx';
 import ImportTab from './tabs/ImportTab.jsx';
 import WelcomeGuide from './components/WelcomeGuide.jsx';
+import ApcLoginGate, { loadCurrentUser, isAdminUser, APC_USER_KEY } from './components/ApcLoginGate.jsx';
 import defaultState from './defaultState.js';
 import { autoExportAllProfiles } from './lib/portableDataManager.js';
 import { APC_NATIVE_SCHEMA } from './apcNativeProfile.js';
@@ -297,6 +298,9 @@ function App() {
   const [appState, setAppState] = useUnifiedState();
   const { toast } = useToast();
   const [showWelcomeGuide, setShowWelcomeGuide] = useState(false);
+  // (4) Dang nhap phan quyen: user hien tai tu localStorage; chua co -> gate
+  const [currentUser, setCurrentUser] = useState(() => loadCurrentUser());
+  const isAdmin = isAdminUser(currentUser);
   
   // 🔧 v2.2.20: ToolsTab state persistence when switching tabs
   const [toolsState, setToolsState] = useState({
@@ -448,6 +452,16 @@ function App() {
     localStorage.setItem(WELCOME_GUIDE_KEY, 'true');
     setShowWelcomeGuide(false);
   };
+
+  // (4) Chua dang nhap -> man hinh chon user, luu localStorage apc_current_user
+  if (!currentUser) {
+    return <ApcLoginGate onLogin={(u) => setCurrentUser(u)} />;
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem(APC_USER_KEY);
+    setCurrentUser(null);
+  };
   
   return (
     <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
@@ -460,15 +474,15 @@ function App() {
         <div className="flex-shrink-0 sticky top-0 z-30 bg-gradient-to-r from-[hsl(var(--banking-green-start))] to-[hsl(var(--banking-green-end))] shadow-md">
             <header className="text-center pt-1 pb-0">
                 <h1 className="text-xl font-bold text-white">DocuGen PMTT</h1>
-                <p className="text-xs text-gray-100">Công cụ tạo tài liệu tự động từ file Word (.docx)</p>
+                <p className="text-xs text-gray-100">Công cụ tạo tài liệu tự động từ file Word (.docx) — {currentUser?.username} ({currentUser?.role}) <button onClick={handleLogout} className="underline ml-1">Đăng xuất</button></p>
             </header>
             <div className="bg-white rounded-md shadow-inner-lg p-1.5 mx-auto max-w-3xl mt-1 mb-1">
-              <TabsList className="grid w-full grid-cols-6 gap-1">
+              <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'} gap-1`}>
                   <TabsTrigger value="data-input"><Dna size={16} /> <span className="ml-1">Nhập Dữ Liệu</span></TabsTrigger>
                   <TabsTrigger value="generator"><Bot size={16} /> <span className="ml-1">Tạo File</span></TabsTrigger>
                   <TabsTrigger value="tools"><Wrench size={16} /> <span className="ml-1">Công Cụ</span></TabsTrigger>
                   <TabsTrigger value="import"><FileSpreadsheet size={16} /> <span className="ml-1">Import Excel</span></TabsTrigger>
-                  <TabsTrigger value="admin"><Database size={16} /> <span className="ml-1">Quản Trị</span></TabsTrigger>
+                  {isAdmin && <TabsTrigger value="admin"><Database size={16} /> <span className="ml-1">Quản Trị</span></TabsTrigger>}
                   <TabsTrigger value="config"><Settings size={16} /> <span className="ml-1">Cấu hình</span></TabsTrigger>
               </TabsList>
             </div>
@@ -549,7 +563,7 @@ function App() {
           </TabsContent>
 
           <TabsContent value="admin" className="h-full">
-            <AdminTab />
+            {isAdmin ? <AdminTab /> : <p className="p-6 text-gray-500">Chỉ admin mới xem được tab Quản Trị.</p>}
           </TabsContent>
 
           <TabsContent value="config" className="h-full">

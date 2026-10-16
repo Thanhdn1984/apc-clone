@@ -2,7 +2,16 @@
 // (KHONG dung port 20245). Chay: node server/api.js
 import express from 'express';
 import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import db from './db.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Thu muc templates/ o root project — chua file .docx mau upload
+const TPL_DIR = path.join(__dirname, '..', 'templates');
+fs.mkdirSync(TPL_DIR, { recursive: true });
+const safeTplName = (n = '') => String(n).replace(/[^a-zA-Z0-9-_.\u00C0-\u024F\u1E00-\u1EF9 ]/g, '_').trim().slice(0, 180);
 
 const app = express();
 const PORT = process.env.APC_API_PORT || 20246;
@@ -17,6 +26,47 @@ const TABLES = {
 };
 
 app.get('/api/health', (req, res) => res.json({ ok: true, port: PORT }));
+
+// --- Template .docx upload: list + upload raw octet-stream + delete ---
+// GET /api/templates -> [{name, size}]
+app.get('/api/templates', (req, res) => {
+  const files = fs.readdirSync(TPL_DIR).filter((f) => /\.docx$/i.test(f));
+  res.json(files.map((name) => ({ name, size: fs.statSync(path.join(TPL_DIR, name)).size })));
+});
+// POST /api/templates?name=xxx.docx (Content-Type: application/octet-stream, body raw)
+app.post('/api/templates', express.raw({ type: 'application/octet-stream', limit: '50mb' }), (req, res) => {
+  const name = safeTplName(req.query.name || '');
+  if (!/\.docx$/i.test(name)) return res.status(400).json({ error: 'need_?name=xxx.docx' });
+  const buf = req.body;
+  if (!buf || !buf.length) return res.status(400).json({ error: 'empty_body' });
+  // magic PK\x03\x04
+  if (buf[0] !== 0x50 || buf[1] !== 0x4b) return res.status(400).json({ error: 'not_docx_zip' });
+  fs.writeFileSync(path.join(TPL_DIR, name), buf);
+  res.status(201).json({ ok: true, name, size: buf.length });
+});
+app.delete('/api/templates/:name', (req, res) => {
+  const name = safeTplName(req.params.name);
+  const p = path.join(TPL_DIR, name);
+  if (!fs.existsSync(p)) return res.status(404).json({ error: 'not_found' });
+  fs.unlinkSync(p);
+  res.json({ ok: true, name });
+});
+// GET /api/templates/:name -> binary .docx (de GeneratorTab nap truc tiep)
+app.get('/api/templates/:name', (req, res) => {
+  const name = safeTplName(req.params.name);
+  const p = path.join(TPL_DIR, name);
+  if (!/\.docx$/i.test(name) || !fs.existsSync(p)) return res.status(404).json({ error: 'not_found' });
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+  fs.createReadStream(p).pipe(res);
+});
+
+// Tim kiem ho so theo customer_code (?q=) — LIKE prefix, toi da ?limit
+app.get('/api/profiles/search', (req, res) => {
+  const q = String(req.query.q || '').trim();
+  if (!q) return res.status(400).json({ error: 'missing_q' });
+  const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+  res.json(db.prepare('SELECT * FROM profiles WHERE customer_code LIKE ? ORDER BY id DESC LIMIT ?').all(q + '%', limit));
+});
 
 for (const [table, cfg] of Object.entries(TABLES)) {
   // LIST (co ?limit)

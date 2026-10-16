@@ -1,0 +1,70 @@
+name: Build Windows Release
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag, e.g. v2.4.4
+        required: false
+        default: latest
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build renderer
+        run: npm run build
+
+      - name: Build Windows installers
+        run: npx electron-builder --win nsis portable --publish never
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Resolve tag
+        id: vars
+        shell: pwsh
+        run: |
+          $inputTag = "${{ github.event.inputs.tag }}"
+          if ([string]::IsNullOrWhiteSpace($inputTag)) { $inputTag = "latest" }
+          if ($inputTag -eq "latest") { $tag = "windows-latest" } else { $tag = $inputTag }
+          echo "tag=$tag" >> $env:GITHUB_OUTPUT
+
+      - name: Normalize latest filenames
+        shell: pwsh
+        run: |
+          $setup = Get-ChildItem release-builds -Filter "*Setup*.exe" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          $portable = Get-ChildItem release-builds -Filter "*Portable*.exe" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $setup) { throw "Setup exe not found" }
+          if (-not $portable) { throw "Portable exe not found" }
+          Copy-Item $setup.FullName "release-builds/DocXAutomationTool-Latest-Setup.exe" -Force
+          Copy-Item $portable.FullName "release-builds/DocXAutomationTool-Latest-Portable.exe" -Force
+
+      - name: Create or update release
+        shell: pwsh
+        run: |
+          $tag = "${{ steps.vars.outputs.tag }}"
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag --title $tag --notes "Windows build from $env:GITHUB_SHA"
+          }
+          gh release upload $tag release-builds/*.exe release-builds/*.blockmap release-builds/latest.yml --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

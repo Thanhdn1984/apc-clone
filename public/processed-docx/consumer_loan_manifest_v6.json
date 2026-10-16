@@ -1,0 +1,17 @@
+{
+  "consumer_full": {
+    "label": "Hồ sơ vay tiêu dùng đầy đủ",
+    "file": "processed_vay-tieu-dung-day-du_v6.zip",
+    "count": 38,
+    "categories": {
+      "01_Hồ sơ vay vốn": 0,
+      "02_Hồ sơ tài sản": 0,
+      "03_Hồ sơ thu nhập": 4,
+      "04_Hồ sơ nhận nợ - giải ngân": 0,
+      "05_Hợp đồng thế chấp": 21,
+      "06_Đăng ký thế chấp": 0,
+      "07_Định giá tài sản": 13,
+      "08_Khác": 0
+    }
+  }
+}

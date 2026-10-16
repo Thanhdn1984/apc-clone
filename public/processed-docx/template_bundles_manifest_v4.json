@@ -1,0 +1,22 @@
+{
+  "ho-so-vay-von": {
+    "label": "Hồ sơ vay vốn",
+    "file": "processed_ho-so-vay-von_v4.zip",
+    "count": 6
+  },
+  "ho-so-tai-san": {
+    "label": "Hồ sơ tài sản",
+    "file": "processed_ho-so-tai-san_v4.zip",
+    "count": 2
+  },
+  "ho-so-nhan-no": {
+    "label": "Hồ sơ nhận nợ",
+    "file": "processed_ho-so-nhan-no_v4.zip",
+    "count": 2
+  },
+  "ho-so-khac": {
+    "label": "Hồ sơ khác",
+    "file": "processed_ho-so-khac_v4.zip",
+    "count": 0
+  }
+}

@@ -1,0 +1,29 @@
+node_modules
+
+# Environment variables (contains secrets - never commit)
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist
+dist/
+release-builds
+release-builds/
+build-output
+build-output/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Local render outputs
+audits/docx_customer_sync_20260525/render-test/

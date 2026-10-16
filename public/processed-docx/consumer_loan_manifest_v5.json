@@ -1,0 +1,17 @@
+{
+  "consumer_full": {
+    "label": "Hồ sơ vay tiêu dùng đầy đủ",
+    "file": "processed_vay-tieu-dung-day-du_v5.zip",
+    "count": 38,
+    "categories": {
+      "04_Ho_so_nhan_no_giai_ngan": 0,
+      "07_Dinh_gia": 0,
+      "02_Ho_so_tai_san": 0,
+      "06_Dang_ky_the_chap": 1,
+      "03_Ho_so_thu_nhap": 3,
+      "08_Khac": 0,
+      "05_Hop_dong_the_chap": 34,
+      "01_Ho_so_vay_von": 0
+    }
+  }
+}

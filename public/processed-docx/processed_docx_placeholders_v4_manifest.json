@@ -1,0 +1,88 @@
+{
+  "version": "v4",
+  "source": "/var/lib/docx-state/uploaded-templates",
+  "validDocx": 59,
+  "excluded": 20,
+  "excludedFiles": [
+    {
+      "file": "DUONG HIEN VANG_HSVV_Bang ke nguoi co lien quan.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_HSVV_Giay muon tien.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_HSVV_Mau 06E - H_TD cho vay uu dai.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_HSVV_MauDangKyTheoQD711.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_HSVV_SMS no vay.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_HSVV___ MS 02A.BC_X-CN BCDXCV CN co TSBD.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "DUONG HIEN VANG_HSVV___2 PA SDV nhu cau doi song co TSB_.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "DUONG HIEN VANG_TAI SAN 2929_DANH MUC HSTS.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_TAI SAN 2929_Giay gioi thieu_Thanh.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_TAI SAN 2929_H_TC.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "DUONG HIEN VANG_TAI SAN 2929_S_ 28.MB.BB_G B_o c_o th_m __nh TSB_ l_ B_t __ng s_n.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_TAI SAN 2929_S_ 30.MB.BB_G Bi_n b_n x_c __nh gi_ tr_ TSB_ l_ QSD __t ok.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "DUONG HIEN VANG_TAI SAN 2929___u 1a Dang ky 2023.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "HSVV___ MS 02A.BC_X-CN BCDXCV CN co TSBD.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "HSVV___2 PA SDV nhu cau doi song co TSB_.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "M_u t_i s_n_New folder_H_TC __t v_ t_i s_n g_n li_n v_i __t.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "M_u t_i s_n_New folder_S_ 03.MB.H_B_ H_TC t_i s_n l_ QSD __t c_a B_n vay_ch_a c_ t_i s_n g_n li_n v_i __t 2929.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "M_u t_i s_n_New folder_S_ 30.MB.BB_G Bi_n b_n x_c __nh gi_ tr_ TSB_ l_ QSD __t ok.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    },
+    {
+      "file": "M_u t_i s_n_T_i s_n_New folder_H_TC __t v_ t_i s_n g_n li_n v_i __t.docx",
+      "reason": "File is not a zip file"
+    },
+    {
+      "file": "M_u t_i s_n_T_i s_n_New folder_S_ 30.MB.BB_G Bi_n b_n x_c __nh gi_ tr_ TSB_ l_ QSD __t ok.docx",
+      "reason": "\"There is no item named 'word/document.xml' in the archive\""
+    }
+  ]
+}

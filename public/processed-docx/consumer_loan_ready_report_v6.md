@@ -1,0 +1,53 @@
+# Bộ hồ sơ vay tiêu dùng đầy đủ v6
+
+- Load một lần toàn bộ: 38 mẫu
+- Bỏ trùng theo nội dung: 15 mẫu
+
+- 01_Hồ sơ vay vốn: 0
+- 02_Hồ sơ tài sản: 0
+- 03_Hồ sơ thu nhập: 4
+- 04_Hồ sơ nhận nợ - giải ngân: 0
+- 05_Hợp đồng thế chấp: 21
+- 06_Đăng ký thế chấp: 0
+- 07_Định giá tài sản: 13
+- 08_Khác: 0
+
+## Danh sách mẫu
+- `03_Hồ sơ thu nhập/01. Phương án sử dụng vốn vay tiêu dùng.docx` (2 placeholder)
+- `03_Hồ sơ thu nhập/02. Đề nghị giải ngân kiêm giấy nhận nợ.docx` (1 placeholder)
+- `03_Hồ sơ thu nhập/03. Giấy xác nhận thu nhập.docx` (2 placeholder)
+- `03_Hồ sơ thu nhập/04. Báo cáo tình hình thu nhập.docx` (3 placeholder)
+- `07_Định giá tài sản/01. Danh mục hồ sơ vay vốn.docx` (3 placeholder)
+- `07_Định giá tài sản/02. Đề nghị nhập tài sản bảo đảm.docx` (4 placeholder)
+- `05_Hợp đồng thế chấp/01. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (1 placeholder)
+- `05_Hợp đồng thế chấp/02. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (56 placeholder)
+- `05_Hợp đồng thế chấp/03. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (40 placeholder)
+- `05_Hợp đồng thế chấp/04. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (31 placeholder)
+- `07_Định giá tài sản/03. Đề nghị nhập tài sản bảo đảm.docx` (14 placeholder)
+- `05_Hợp đồng thế chấp/05. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (46 placeholder)
+- `05_Hợp đồng thế chấp/06. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (43 placeholder)
+- `07_Định giá tài sản/04. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (37 placeholder)
+- `07_Định giá tài sản/05. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (16 placeholder)
+- `05_Hợp đồng thế chấp/07. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (1 placeholder)
+- `05_Hợp đồng thế chấp/08. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (1 placeholder)
+- `07_Định giá tài sản/06. Đề nghị nhập tài sản bảo đảm.docx` (4 placeholder)
+- `05_Hợp đồng thế chấp/09. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (13 placeholder)
+- `05_Hợp đồng thế chấp/10. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (2 placeholder)
+- `05_Hợp đồng thế chấp/11. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (2 placeholder)
+- `07_Định giá tài sản/07. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (1 placeholder)
+- `07_Định giá tài sản/08. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (1 placeholder)
+- `05_Hợp đồng thế chấp/12. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (53 placeholder)
+- `05_Hợp đồng thế chấp/13. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (48 placeholder)
+- `05_Hợp đồng thế chấp/14. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (1 placeholder)
+- `05_Hợp đồng thế chấp/15. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (30 placeholder)
+- `05_Hợp đồng thế chấp/16. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (3 placeholder)
+- `05_Hợp đồng thế chấp/17. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (25 placeholder)
+- `05_Hợp đồng thế chấp/18. Hợp đồng thế chấp quyền sử dụng đất và tài sản gắn liền với đất.docx` (26 placeholder)
+- `07_Định giá tài sản/09. Đề nghị nhập tài sản bảo đảm.docx` (14 placeholder)
+- `05_Hợp đồng thế chấp/19. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (45 placeholder)
+- `05_Hợp đồng thế chấp/20. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (44 placeholder)
+- `07_Định giá tài sản/10. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (38 placeholder)
+- `07_Định giá tài sản/11. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (42 placeholder)
+- `07_Định giá tài sản/12. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (14 placeholder)
+- `07_Định giá tài sản/13. Biên bản xác định giá trị tài sản bảo đảm là quyền sử dụng đất.docx` (45 placeholder)
+- `05_Hợp đồng thế chấp/21. Hợp đồng thế chấp tài sản bên thứ ba bảo lãnh.docx` (11 placeholder)

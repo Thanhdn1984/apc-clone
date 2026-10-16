@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs.jsx";
-import { Dna, Settings, Bot, Download, RefreshCw, Wrench, MonitorDown } from 'lucide-react';
+import { Dna, Settings, Bot, Download, RefreshCw, Wrench, MonitorDown, Database, FileSpreadsheet } from 'lucide-react';
 import { useToast } from "./components/ui/use-toast.js";
 import { Toaster } from "./components/ui/toaster.jsx";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./components/ui/alert-dialog.jsx";
@@ -11,6 +11,8 @@ import DataInputTab from './tabs/DataInputTab.jsx';
 import GeneratorTab from './tabs/GeneratorTab.jsx';
 import ConfigTab from './tabs/ConfigTab.jsx';
 import ToolsTab from './tabs/ToolsTab.jsx';
+import AdminTab from './tabs/AdminTab.jsx';
+import ImportTab from './tabs/ImportTab.jsx';
 import WelcomeGuide from './components/WelcomeGuide.jsx';
 import defaultState from './defaultState.js';
 import { autoExportAllProfiles } from './lib/portableDataManager.js';
@@ -461,10 +463,12 @@ function App() {
                 <p className="text-xs text-gray-100">Công cụ tạo tài liệu tự động từ file Word (.docx)</p>
             </header>
             <div className="bg-white rounded-md shadow-inner-lg p-1.5 mx-auto max-w-3xl mt-1 mb-1">
-              <TabsList className="grid w-full grid-cols-4 gap-1">
+              <TabsList className="grid w-full grid-cols-6 gap-1">
                   <TabsTrigger value="data-input"><Dna size={16} /> <span className="ml-1">Nhập Dữ Liệu</span></TabsTrigger>
                   <TabsTrigger value="generator"><Bot size={16} /> <span className="ml-1">Tạo File</span></TabsTrigger>
                   <TabsTrigger value="tools"><Wrench size={16} /> <span className="ml-1">Công Cụ</span></TabsTrigger>
+                  <TabsTrigger value="import"><FileSpreadsheet size={16} /> <span className="ml-1">Import Excel</span></TabsTrigger>
+                  <TabsTrigger value="admin"><Database size={16} /> <span className="ml-1">Quản Trị</span></TabsTrigger>
                   <TabsTrigger value="config"><Settings size={16} /> <span className="ml-1">Cấu hình</span></TabsTrigger>
               </TabsList>
             </div>
@@ -538,6 +542,14 @@ function App() {
               numberFormat={numberFormat}
               dateFormat={dateFormat}
             />
+          </TabsContent>
+
+          <TabsContent value="import" className="h-full">
+            <ImportTab />
+          </TabsContent>
+
+          <TabsContent value="admin" className="h-full">
+            <AdminTab />
           </TabsContent>
 
           <TabsContent value="config" className="h-full">

@@ -27,3 +27,7 @@ Thumbs.db
 
 # Local render outputs
 audits/docx_customer_sync_20260525/render-test/
+.env
+*.db
+*.db-shm
+*.db-wal

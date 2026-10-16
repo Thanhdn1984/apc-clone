@@ -24,6 +24,8 @@ import { ScanText } from 'lucide-react';
 import ApcNativeSchemaPanel from '../components/data-input/management/ApcNativeSchemaPanel.jsx';
 import ApcDynamicFields from '../components/data-input/ApcDynamicFields.jsx';
 import ApcProfileSearch from '../components/data-input/ApcProfileSearch.jsx';
+import DocCheckPanel from '../components/data-input/DocCheckPanel.jsx';
+import { checkProfile, groupWarningsByField } from '../lib/docCheckEngine.js';
 
 const DataInputTab = ({
   fields,
@@ -277,6 +279,7 @@ const DataInputTab = ({
         
         <TabsContent value="data-input">
           <div>
+            <DocCheckPanelInner fields={fields} inputData={inputData} />
             {processedAndEvaluatedGroups.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-gray-500 text-lg">Chưa có trường dữ liệu.</p>
@@ -398,3 +401,30 @@ const DataInputTab = ({
 };
 
 export default DataInputTab;
+
+// --- Wrapper: chạy checkProfile theo inputData (debounce), cuộn tới field ---
+function DocCheckPanelInner({ fields, inputData }) {
+  const [warnings, setWarnings] = React.useState([]);
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      try {
+        setWarnings(checkProfile(fields, inputData));
+      } catch {
+        setWarnings([]);
+      }
+    }, 300);
+    return () => clearTimeout(t);
+  }, [fields, inputData]);
+
+  const jump = (fieldId) => {
+    const el = document.getElementById(fieldId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.focus?.();
+      el.classList.add('ring-2', 'ring-amber-400');
+      setTimeout(() => el.classList.remove('ring-2', 'ring-amber-400'), 1600);
+    }
+  };
+  void groupWarningsByField; // dùng cho highlight inline về sau
+  return <DocCheckPanel warnings={warnings} onJump={jump} />;
+}
